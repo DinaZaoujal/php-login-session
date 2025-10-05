@@ -1,9 +1,10 @@
 PHP Login Session Project
 
-Deze project bevat een simpel login-systeem in PHP dat werkt met sessions.
+
 
 Bestanden
-login.php — loginformulier en verificatie.  
+index.php , login.php , logout.php
+login.php loginformulier en verificatie.  
 Gebruik om in te loggen:
     E-mail: Dina@shop.com
    Wachtwoord: 12345isnotsecure
