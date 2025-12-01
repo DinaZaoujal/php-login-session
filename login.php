@@ -1,41 +1,56 @@
-<?php // login.php 
+<?php
+session_start();
+var_dump($_POST);
 
-//session_start();
-//if (!empty($_SESSION))
-function canLogin($p_email , $p_password){
-$conn = new PDO('mysql:host=localhost;dbname=`php webshop`', "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$statement=$conn->prepare("SELECT*FROM user WHERE email=:email");
-
-$statement->execute();
-
-$user=$statement->fetch(PDO::FETCH_ASSOC);
-if (password_verify($p_password,$user['password'])){
-    return true;
-
-}else{
-    return false;
-}
-}
-
-if (!empty($_POST)){
-    $email=$_POST['email'];
-    $password=$_POST['password'];
-
-    if(canLogin($email,$password)){
-        $salt="342334535DFE3ZTD5";
-        $cookieVal=$email . ",". md5($email.$salt);
-        setcookie("loggedin",$cookieVal, time()+60*60*24*30,"/","",true,true);
+function canLogin($email, $password) {
+    try {
         
-        header('Location: index.php');
-        exit;
+        $conn = new PDO('mysql:host=localhost;dbname=webshop', "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    }else{
-        $error= "Sorry, we can't log in with that email adress and password. Can you try again?";
+       
+        $stmt = $conn->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+     
+        var_dump($user);
+
+        if (!$user) {
+            return false; 
+        }
+
+        
+        if (password_verify($password, $user['password'])) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+    } catch (PDOException $e) {
+        echo "Database fout: " . $e->getMessage();
+        return false;
     }
 }
-?><!DOCTYPE html>
+
+
+if (!empty($_POST)) {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    if (canLogin($email, $password)) {
+        $_SESSION['logged_in'] = true;
+        $_SESSION['email'] = $email;
+
+        header("Location: index.php");
+        exit;
+    } else {
+        $error = "E-mail of wachtwoord is fout.";
+    }
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,7 +74,7 @@ if (!empty($_POST)){
 </form>
 <p>geen account?<a href="register.php">Registreer hier</a></p>
 </div>
-</form>  
+ 
 
 </body>
 </html>
