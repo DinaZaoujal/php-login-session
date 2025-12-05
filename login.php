@@ -4,36 +4,27 @@ var_dump($_POST);
 
 function canLogin($email, $password) {
     try {
-        
-        $conn = new PDO('mysql:host=localhost;dbname=webshop', "root", "");
+        $conn = new PDO("mysql:host=localhost;dbname=webshop;charset=utf8mb4", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-       
-        $stmt = $conn->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt = $conn->prepare("SELECT * FROM `user` WHERE email = :email");
         $stmt->execute(['email' => $email]);
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-     
         var_dump($user);
 
         if (!$user) {
-            return false; 
+            return false;
         }
 
-        
-        if (password_verify($password, $user['password'])) {
-            return true; 
-        } else {
-            return false; 
-        }
+        return password_verify($password, $user['password']);
 
     } catch (PDOException $e) {
         echo "Database fout: " . $e->getMessage();
         return false;
     }
 }
-
 
 if (!empty($_POST)) {
     $email = trim($_POST['email']);
@@ -54,27 +45,25 @@ if (!empty($_POST)) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
 </head>
 <body>
- <h1>log-in</h1>
- <?php if (isset($error)): ?>
-<p style="color:red;"><?php echo ($error); ?></p>
+<h1>log-in</h1>
+
+<?php if (isset($error)): ?>
+<p style="color:red;"><?php echo $error; ?></p>
 <?php endif; ?>
-<div class="form_field">
+
 <form method="post">
 <label>E-mail:</label><br>
 <input type="email" name="email" required><br><br>
 
 <label>Wachtwoord:</label><br>
 <input type="password" name="password" required><br><br>
+
 <button type="submit">inloggen</button>
-
 </form>
-<p>geen account?<a href="register.php">Registreer hier</a></p>
-</div>
- 
 
+<p>geen account? <a href="register.php">Registreer hier</a></p>
 </body>
 </html>

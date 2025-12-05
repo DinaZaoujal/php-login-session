@@ -1,35 +1,34 @@
 <?php
 session_start();
 
+echo "<pre>";
+var_dump($_POST);
+echo "</pre>";
+
 $pdo = new PDO("mysql:host=localhost;dbname=webshop;charset=utf8mb4", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $email = trim($_POST['email'] ?? "");
+    $password = trim($_POST['password'] ?? "");
 
     if ($email === "" || $password === "") {
         $error = "Vul een e-mail en wachtwoord in.";
     } else {
-        
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        
         $stmt = $pdo->prepare("INSERT INTO user (email, password) VALUES (?, ?)");
         $stmt->execute([$email, $hashedPassword]);
 
-       
         header("Location: login.php");
         exit;
     }
-    
 }
 ?>
-
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Registreren</title>
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
 <?php endif; ?>
 
-<form method="post">
+<form method="post" action="">
     <label>E-mail:</label><br>
     <input type="email" name="email" required><br><br>
 

@@ -8,23 +8,56 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 ?>
 
 <!DOCTYPE html>
-<html lang="nl">
-<head>
+<html lang="en">
     <meta charset="UTF-8">
     <title>Welkom</title>
     <style>
-        
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Helvetica;background:#f5f5f5;color:#333;}
 
-header, nav, .hero, footer {text-align:center;padding:1.4rem;}
-header{background:#667eea;color:white;display:flex;justify-content:space-between;align-items:center;}
-nav{background:white;}
-nav ul{display:flex;justify-content:center;gap:2rem;list-style:none;}
-nav a{text-decoration:none;color:#667eea;}
-.hero{background:#ecebfd;padding:2rem;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    font-family:Helvetica;
+    background:#f5f5f5;
+    color:#333;
+}
 
-.container{max-width:1100px;margin:auto;padding:20px;}
+header, nav, .hero, footer {
+    text-align:center;
+    padding:1.4rem;
+}
+header{
+    background:#667eea;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+nav{
+    background:white;
+}
+nav ul{
+    display:flex;
+    justify-content:center;
+    gap:2rem;
+    list-style:none;
+}
+nav a{
+    text-decoration:none;
+    color:#667eea;
+}
+.hero{
+    background:#ecebfd;
+    padding:2rem;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
 
 .product-grid{
     display:grid;
@@ -94,7 +127,7 @@ nav a{text-decoration:none;color:#667eea;}
 <section id="products" class="container">
     <h2 style="text-align:center;margin:1.5rem 0;">Populaire Producten</h2>
     <div class="product-grid">
-        <?php foreach($products as $p): ?>
+        <?php $product =[]; foreach($products as $p): ?>
         <div class="product-card">
             <div class="product-image">
                 <img src="<?= $p['image'] ?>" alt="<?= $p['name'] ?>">
