@@ -3,7 +3,11 @@ $pdo = new PDO ("mysql:host=localhost;dbname=webshop", "root", "");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $price = $_POST['price'];
-    $category= ["Smartphone","Keyboards","Headphones","Gaming"];
+    $category= ["Smartphone",
+    "Keyboards",
+    "Headphones",
+    "Gaming"];
+    
     foreach($category as $cat){
        $check=$pdo->prepare("SELECT * FROM categories WHERE name=?");
          $check->execute([$cat]);
@@ -22,3 +26,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Error adding category.";
     }
 
+}
