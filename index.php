@@ -5,6 +5,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header("Location: login.php");
     exit;
 }
+$products = [
+['id' =>1, 'name'=>'Draadloze Oordopjes', 'description'=>' Premuim sound' , 'prijs'=>'89.99', 'image'=>'img/earbuds.png'],
+['id'=>2,'name'=>'Smartwatch Pro','description'=>'Fitness & notificaties','prijs'=>'249.99','image'=>'img/smartwatch.png'],
+
+['id'=>3,'name'=>'Draadloos Toetsenbord','description'=>'RGB mechanisch','prijs'=>'129.99','image'=>'img/keyboard.png'],
+['id'=>4,'name'=>'Webcam 4K','description'=>'Crystal clear','prijs'=>'159.99','image'=>'images/webcam.jpg'],
+['id'=>5,'name'=>'Portable Speaker','description'=>'20 uur batterij','prijs'=>'79.99','image'=>'images/portablespeaker.jpg'],
+['id'=>6,'name'=>'Gaming Muis','description'=>'16.000 DPI','prijs'=>'69.99','image'=>'images/mouse.jpg']
+]
+
 ?>
 
 <!DOCTYPE html>
@@ -12,12 +22,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <meta charset="UTF-8">
     <title>Welkom</title>
     <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
 body{
     font-family:Helvetica;
     background:#f5f5f5;
