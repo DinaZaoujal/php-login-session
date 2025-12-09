@@ -112,6 +112,7 @@ nav a{
     <h1>TechGadgets</h1>
     <div style="display:flex;gap:20px;align-items:center;">
         <span class="cart-text">Winkelwagen</span>
+        <button class="btn" onclick="addToCart(<?= $p['id'] ?>)">Toevoegen</button>
         <a href="logout.php" style="color:white;">Logout</a>
     </div>
 </header>
@@ -149,7 +150,11 @@ nav a{
     <p>&copy; 2025 TechGadgets</p>
 </footer>
 
-
+<script>
+function addToCart(id) {
+    window.location.href = "cart.php?add=" + id;
+}
+</script>
 
 </body>
 </html>

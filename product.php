@@ -22,6 +22,5 @@ $products= Product::getAll();
     <?php endif; ?>
   </div>
   <?php endforeach; ?>
-
 </body>
 </html>
