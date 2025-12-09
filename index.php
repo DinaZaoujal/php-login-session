@@ -9,10 +9,10 @@ $products = [
 ['id' =>1, 'name'=>'Draadloze Oordopjes', 'description'=>' Premuim sound' , 'prijs'=>'89.99', 'image'=>'img/earbuds.png'],
 ['id'=>2,'name'=>'Smartwatch Pro','description'=>'Fitness & notificaties','prijs'=>'249.99','image'=>'img/smartwatch.png'],
 
-['id'=>3,'name'=>'Draadloos Toetsenbord','description'=>'RGB mechanisch','prijs'=>'129.99','image'=>'img/keyboard.png'],
-['id'=>4,'name'=>'Webcam 4K','description'=>'Crystal clear','prijs'=>'159.99','image'=>'images/webcam.jpg'],
-['id'=>5,'name'=>'Portable Speaker','description'=>'20 uur batterij','prijs'=>'79.99','image'=>'images/portablespeaker.jpg'],
-['id'=>6,'name'=>'Gaming Muis','description'=>'16.000 DPI','prijs'=>'69.99','image'=>'images/mouse.jpg']
+['id'=>3,'name'=>'Draadloos Toetsenbord','description'=>'AZERTY keyboard','prijs'=>'129.99','image'=>'img/keyboard.png'],
+['id'=>4,'name'=>'Webcam 4K','description'=>'Crystal clear','prijs'=>'159.99','image'=>'img/webcam.png'],
+['id'=>5,'name'=>'Portable Speaker','description'=>'20 uur batterij','prijs'=>'79.99','image'=>'img/Portablespeaker.jpeg'],
+['id'=>6,'name'=>'Gaming Muis','description'=>'16.000 DPI','prijs'=>'69.99','image'=>'img/gamingmouse.png']
 ]
 
 ?>
@@ -120,7 +120,7 @@ nav a{
     <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#products">Producten</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact">Category</a></li>
     </ul>
 </nav>
 
@@ -153,4 +153,5 @@ nav a{
 
 </body>
 </html>
+
 
