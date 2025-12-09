@@ -12,12 +12,14 @@ $products= Product::getAll();
 </head>
 <body>
   <h1> Producten Lijst</h1>  
-  <?php foreach($products as $p); ?>
+  <?php foreach($products as $p): ?>
   <div>
     <h2><?php echo $p['name']; ?></h2>
     <p><?php echo $p['description']; ?></p>
     <p>Prijs: €<?php echo $p['price']; ?></p>
+    <?php if(!empty($p['image'])): ?>
     <img src="uploads/<?php echo $p['image']; ?>" width="150">
+    <?php endif; ?>
   </div>
   <?php endforeach; ?>
 
