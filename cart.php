@@ -1,5 +1,5 @@
 <?php
-session_start() ;;
+session_start() ;
 require_once"Classes/product.php";
 
 if (!isset($_SESSION['cart'])){
