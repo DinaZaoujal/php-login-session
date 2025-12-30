@@ -1,6 +1,6 @@
 <?php
 session_start();
-var_dump($_POST);
+//var_dump($_POST);
 
 function canLogin($email, $password) {
     try {
@@ -46,24 +46,29 @@ if (!empty($_POST)) {
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+    <link rel="stylesheet" href="login.css">
+
 </head>
 <body>
-<h1>log-in</h1>
+<div class="login-container">
+    <h1>Log in</h1>
 
-<?php if (isset($error)): ?>
-<p style="color:red;"><?php echo $error; ?></p>
-<?php endif; ?>
+    <?php if (isset($error)): ?>
+        <div class="error"><?php echo $error; ?></div>
+    <?php endif; ?>
 
-<form method="post">
-<label>E-mail:</label><br>
-<input type="email" name="email" required><br><br>
+    <form method="post">
+        <label>E-mail</label>
+        <input type="email" name="email" required>
 
-<label>Wachtwoord:</label><br>
-<input type="password" name="password" required><br><br>
+        <label>Wachtwoord</label>
+        <input type="password" name="password" required>
 
-<button type="submit">inloggen</button>
-</form>
+        <button type="submit">Inloggen</button>
+    </form>
 
-<p>geen account? <a href="register.php">Registreer hier</a></p>
+    <p>Geen account? <a href="register.php">Registreer hier</a></p>
+</div>
+
 </body>
 </html>

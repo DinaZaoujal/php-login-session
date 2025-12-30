@@ -5,15 +5,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header("Location: login.php");
     exit;
 }
+
 $products = [
-['id' =>1, 'name'=>'Draadloze Oordopjes', 'description'=>' Premuim sound' , 'prijs'=>'89.99', 'image'=>'img/earbuds.png'],
+['id' =>1, 'name'=>'Draadloze Oordopjes', 'description'=>'Premuim sound' , 'prijs'=>'89.99', 'image'=>'img/earbuds.png'],
 ['id'=>2,'name'=>'Smartwatch Pro','description'=>'Fitness & notificaties','prijs'=>'249.99','image'=>'img/smartwatch.png'],
 
 ['id'=>3,'name'=>'Draadloos Toetsenbord','description'=>'AZERTY keyboard','prijs'=>'129.99','image'=>'img/keyboard.png'],
 ['id'=>4,'name'=>'Webcam 4K','description'=>'Crystal clear','prijs'=>'159.99','image'=>'img/webcam.png'],
 ['id'=>5,'name'=>'Portable Speaker','description'=>'20 uur batterij','prijs'=>'79.99','image'=>'img/Portablespeaker.jpeg'],
 ['id'=>6,'name'=>'Gaming Muis','description'=>'16.000 DPI','prijs'=>'69.99','image'=>'img/gamingmouse.png']
-]
+];
 
 ?>
 
@@ -108,11 +109,13 @@ nav a{
 </style>
 </head>
 
+<body>
+
 <header>
     <h1>TechGadgets</h1>
     <div style="display:flex;gap:20px;align-items:center;">
         <span class="cart-text">Winkelwagen</span>
-        <button class="btn" onclick="addToCart(<?= $p['id'] ?>)">Toevoegen</button>
+        <a href="cart.php" style="color:white;">Bekijk</a>
         <a href="logout.php" style="color:white;">Logout</a>
     </div>
 </header>
@@ -131,17 +134,18 @@ nav a{
 
 <section id="products" class="container">
     <h2 style="text-align:center;margin:1.5rem 0;">Populaire Producten</h2>
+
     <div class="product-grid">
-        <?php $product =[]; foreach($products as $p): ?>
-        <div class="product-card">
-            <div class="product-image">
-                <img src="<?= $p['image'] ?>" alt="<?= $p['name'] ?>">
+        <?php foreach($products as $p): ?>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="<?= htmlspecialchars($p['image']); ?>" alt="<?= htmlspecialchars($p['name']); ?>">
+                </div>
+                <h3><?= htmlspecialchars($p['name']); ?></h3>
+                <p><?= htmlspecialchars($p['description']); ?></p>
+                <strong>€<?= $p['prijs']; ?></strong>
+                <button class="btn" onclick="addToCart(<?= $p['id']; ?>)">Toevoegen</button>
             </div>
-            <h3><?= $p['name'] ?></h3>
-            <p><?= $p['description'] ?></p>
-            <strong>€<?= $p['prijs'] ?></strong>
-            <button class="btn" onclick="addToCart(<?= $p['id'] ?>)">Toevoegen</button>
-        </div>
         <?php endforeach; ?>
     </div>
 </section>
@@ -158,5 +162,3 @@ function addToCart(id) {
 
 </body>
 </html>
-
-
