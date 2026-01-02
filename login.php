@@ -51,7 +51,8 @@ if (!empty($_POST)) {
 <head>
     <meta charset="UTF-8">
     <title>login</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="Css/normalize.css">
+    <link rel="stylesheet" href="Css/login.css">
 
 </head>
 <body>

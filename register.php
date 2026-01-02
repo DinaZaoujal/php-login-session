@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $stmt = $pdo->prepare(
-                "INSERT INTO users (email, password) VALUES (?, ?)"
+                "INSERT INTO users (email, password, balance) VALUES (?, ?, 100)"
             );
             $stmt->execute([$email, $hashedPassword]);
 
@@ -41,30 +41,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <title>Registreren</title>
+    <link rel="stylesheet" href="Css/normalize.css">
+    <link rel="stylesheet" href="Css/register.css">
 </head>
 <body>
 
-<h1>Registreren</h1>
+<div class="login-container">
+    <h1>Registreren</h1>
 
-<?php if ($error !== ""): ?>
-    <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
-<?php endif; ?>
+    <?php if ($error !== ""): ?>
+        <div class="error"><?= htmlspecialchars($error); ?></div>
+    <?php endif; ?>
 
-<form method="post">
-    <label>E-mail:</label><br>
-    <input type="email" name="email" required><br><br>
+    <form method="post">
+        <label>E-mail</label>
+        <input type="email" name="email" required>
 
-    <label>Wachtwoord:</label><br>
-    <input type="password" name="password" required><br><br>
+        <label>Wachtwoord</label>
+        <input type="password" name="password" required>
 
-    <button type="submit">Registreren</button>
-</form>
+        <button type="submit">Account aanmaken</button>
+    </form>
 
-<p>Heb je al een account? <a href="login.php">Login hier</a></p>
+    <p>Heb je al een account?
+        <a href="login.php">Login hier</a>
+    </p>
+</div>
 
 </body>
 </html>

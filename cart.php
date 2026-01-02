@@ -35,18 +35,14 @@ if (isset($_POST['checkout'])) {
         header("Location: login.php");
         exit;
     }
-
+//prijs vooor slado
     $conn = Database::getConnection();
     $userId = $_SESSION['user_id'];
-
-    // Bereken totaalprijs
     $total = 0;
     foreach ($_SESSION['cart'] as $id => $qty) {
         $product = Product::getById($id);
         $total += $product['price'] * $qty;
     }
-
-    // Haal balance op
     $stmt = $conn->prepare("SELECT balance FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $balance = round($stmt->fetchColumn(), 2);
@@ -54,13 +50,9 @@ if (isset($_POST['checkout'])) {
     if ($balance < $total) {
         die("❌ Onvoldoende saldo. Uw balance: €" . number_format($balance,2,',','.') . ", totaal: €" . number_format($total,2,',','.'));
     }
-
-    // Insert order
     $stmt = $conn->prepare("INSERT INTO orders (user_id, total) VALUES (?, ?)");
     $stmt->execute([$userId, $total]);
     $orderId = $conn->lastInsertId();
-
-    // Insert order items
     $stmtItem = $conn->prepare("INSERT INTO order_items (order_id, product_id, price) VALUES (?, ?, ?)");
     foreach ($_SESSION['cart'] as $id => $qty) {
         $product = Product::getById($id);
@@ -68,8 +60,6 @@ if (isset($_POST['checkout'])) {
             $stmtItem->execute([$orderId, $id, $product['price']]);
         }
     }
-
-    // Balance update
     $stmt = $conn->prepare("UPDATE users SET balance = balance - ? WHERE id = ?");
     $stmt->execute([$total, $userId]);
     $_SESSION['cart'] = [];
@@ -77,8 +67,6 @@ if (isset($_POST['checkout'])) {
     header("Location: cart.php?success=1");
     exit;
 }
-
-// haal alle producten uit cart
 $allProducts = Product::getAll();
 $cartItems = [];
 $totalPrice = 0.0;
@@ -101,7 +89,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Winkelwagen</title>
   <link rel="stylesheet" href="Css/normalize.css">  
-  <link rel="stylesheet" href="/Css/cart.css">  
+  <link rel="stylesheet" href="Css/cart.css">  
 </head>
 
 <body>
