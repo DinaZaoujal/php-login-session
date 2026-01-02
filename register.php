@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $stmt = $pdo->prepare(
-                "INSERT INTO user_new (email, password) VALUES (?, ?)"
+                "INSERT INTO users (email, password) VALUES (?, ?)"
             );
             $stmt->execute([$email, $hashedPassword]);
 

@@ -7,18 +7,19 @@ function canLogin($email, $password) {
         $conn = new PDO("mysql:host=localhost;dbname=webshop;charset=utf8mb4", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT * FROM `user` WHERE email = :email");
+        $stmt = $conn->prepare("SELECT * FROM `users` WHERE email = :email");
         $stmt->execute(['email' => $email]);
-
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        var_dump($user);
 
         if (!$user) {
             return false;
         }
 
-        return password_verify($password, $user['password']);
+        if (password_verify($password, $user['password'])) {
+            return $user; 
+        } else {
+            return false;
+        }
 
     } catch (PDOException $e) {
         echo "Database fout: " . $e->getMessage();
@@ -26,20 +27,24 @@ function canLogin($email, $password) {
     }
 }
 
+
 if (!empty($_POST)) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    if (canLogin($email, $password)) {
+    $user = canLogin($email, $password); 
+
+    if ($user) {
         $_SESSION['logged_in'] = true;
         $_SESSION['email'] = $email;
-
+        $_SESSION['user_id'] = $user['id'];
         header("Location: index.php");
         exit;
     } else {
         $error = "E-mail of wachtwoord is fout.";
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

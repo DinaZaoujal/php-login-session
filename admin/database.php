@@ -1,7 +1,5 @@
 <?php
-
 class Database {
-
     private static $conn = null;
 
     public static function getConnection() {
