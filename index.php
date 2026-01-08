@@ -34,10 +34,6 @@ if ($selectedCategory) {
     <title>TechGadgets</title>
     <link rel="stylesheet" href="Css/normalize.css">  
     <link rel="stylesheet" href="Css/index.css">
-    <style>
-        /* HEADER + NAV */
-  
-    </style>
 </head>
 <body>
 
@@ -46,9 +42,9 @@ if ($selectedCategory) {
         <img src="img/Logo.svg" alt="TechGadgets" class="logo">
     </a>
     <nav>
-        <a href="index.php">Home</a>
         <a href="cart.php">Winkelwagen</a>
         <a href="account.php">Account</a>
+        <a href="logout.php">Uitloggen</a>
     </nav>
 </header>
 
@@ -58,8 +54,6 @@ if ($selectedCategory) {
 
 <section id="products" class="container">
     <h2>Populaire Producten</h2>
-
-    <!-- Categorie filter -->
     <form method="get" style="margin-bottom:20px;">
         <select name="category">
             <option value="">Alle categorieën</option>
