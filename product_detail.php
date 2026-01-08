@@ -1,18 +1,25 @@
 <?php
 session_start();
-require_once "admin/database.php";
-require_once "Classes/Product.php";
-require_once "Classes/Rating.php";
+require_once "db.php";
 
 $productId = intval($_GET['id'] ?? 0);
-$product = Product::getById($productId);
+
+$stmt = $conn->prepare("SELECT * FROM product WHERE id = ?");
+$stmt->execute([$productId]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$product) {
     die("Product niet gevonden");
 }
 
-$ratings = Rating::getByProduct($productId);
-$average = Rating::getAverage($productId);
+$stmt = $conn->prepare("SELECT r.*, u.email FROM rating r JOIN users u ON r.user_id = u.id WHERE r.product_id = ? ORDER BY r.created_at DESC");
+$stmt->execute([$productId]);
+$ratings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $conn->prepare("SELECT AVG(rating) AS avg_rating FROM rating WHERE product_id = ?");
+$stmt->execute([$productId]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$average = $row['avg_rating'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -35,15 +42,12 @@ $average = Rating::getAverage($productId);
 
 <div class="product-box">
     <h1><?= htmlspecialchars($product['name']); ?></h1>
-
     <img src="img/<?= htmlspecialchars($product['image']); ?>" class="product-image">
-
     <p><?= htmlspecialchars($product['description']); ?></p>
     <p><strong>Prijs:</strong> €<?= number_format($product['price'],2,',','.'); ?></p>
-    <p><strong>Gemiddelde rating:</strong> <?= $average ?: 'Nog geen reviews'; ?></p>
+    <p><strong>Gemiddelde rating:</strong> <?= $average ? number_format($average,1) : 'Nog geen reviews'; ?></p>
 
     <h2>Reviews</h2>
-
     <div id="reviewsContainer">
         <?php if (empty($ratings)): ?>
             <p>Er zijn nog geen reviews.</p>
@@ -54,14 +58,8 @@ $average = Rating::getAverage($productId);
                     Rating: <?= (int)$r['rating']; ?>/5<br>
                     <?= nl2br(htmlspecialchars($r['comment'])); ?><br>
                     <small><?= substr($r['created_at'], 0, 10); ?></small><br>
-
                     <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $r['user_id']): ?>
-                        <button 
-                            type="button"
-                            class="btn delete-review"
-                            data-id="<?= $r['id']; ?>">
-                            Verwijderen
-                        </button>
+                        <button type="button" class="btn delete-review" data-id="<?= $r['id']; ?>">Verwijderen</button>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
@@ -70,16 +68,12 @@ $average = Rating::getAverage($productId);
 
     <?php if (isset($_SESSION['user_id'])): ?>
         <h3>Laat een review achter</h3>
-
         <form id="commentForm">
             <input type="hidden" name="product_id" value="<?= $productId; ?>">
-
             <label>Rating (1-5):</label><br>
             <input type="number" name="rating" min="1" max="5" required><br><br>
-
             <label>Comment:</label><br>
             <textarea name="comment" required></textarea><br><br>
-
             <button type="submit" class="btn">Verstuur</button>
         </form>
     <?php else: ?>
@@ -88,12 +82,9 @@ $average = Rating::getAverage($productId);
 </div>
 
 <script>
-// REVIEW TOEVOEGEN (AJAX)
 document.getElementById('commentForm')?.addEventListener('submit', function(e){
     e.preventDefault();
-
     let formData = new FormData(this);
-
     fetch('ajax/rating.php', {
         method: 'POST',
         body: formData
@@ -101,22 +92,18 @@ document.getElementById('commentForm')?.addEventListener('submit', function(e){
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            location.reload(); // veilig & simpel
+            location.reload();
         } else {
-            alert('Review toevoegen mislukt');
+            alert(data.message || 'Review toevoegen mislukt');
         }
     });
 });
 
-// REVIEW VERWIJDEREN (AJAX)
 document.querySelectorAll('.delete-review').forEach(btn => {
     btn.addEventListener('click', function (e) {
         e.preventDefault();
-
         if (!confirm('Review verwijderen?')) return;
-
         let reviewId = this.dataset.id;
-
         fetch('ajax/delete_review.php', {
             method: 'POST',
             headers: {
@@ -129,7 +116,7 @@ document.querySelectorAll('.delete-review').forEach(btn => {
             if (data.success) {
                 document.getElementById('review-' + reviewId).remove();
             } else {
-                alert('Kan review niet verwijderen');
+                alert(data.message || 'Kan review niet verwijderen');
             }
         })
         .catch(() => alert('AJAX fout'));
