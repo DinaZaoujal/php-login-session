@@ -5,7 +5,7 @@ class Database {
     public static function getConnection() {
         if (self::$conn === null) {
             self::$conn = new PDO(
-               "mysql:host=127.0.0.1;dbname=webshop_fixed;charset=utf8mb4",
+               "mysql:host=127.0.0.1;dbname=webshop;charset=utf8mb4",
                 "root",
                 "" // XAMPP crash fix 1.5
             );
